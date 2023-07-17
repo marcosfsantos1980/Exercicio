@@ -100,7 +100,7 @@ namespace Questao5.Infrastructure.Sqlite
                 //var reg = connection.Execute("Insert Into movimento (idmovimento,idcontacorrente,datamovimento,tipomovimento,valor)Values(@IdMovimento,@IdContacorrente,@DataMovimento,@TipoMovimento,@Valor);", pars);
                 // var reg = connection.Execute(sql, pars);
 
-                string sql = $"Insert Into movimento (idmovimento,idcontacorrente,datamovimento,tipomovimento,valor)Values('{IdDoMovimento}','{contaCorrente.IdContaCorrente}','{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}','{Tipo}', {FixNumberToRecBD(Valor)})";
+                string sql = $"Insert Into movimento (idmovimento,idcontacorrente,datamovimento,tipomovimento,valor)Values('{IdDoMovimento}','{contaCorrente.IdContaCorrente}','{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}','{Tipo.ToUpper()}', {FixNumberToRecBD(Valor)})";
                 var reg = await connection.ExecuteAsync(sql);
                 this.RegistrarTransacao(Request.RequestID ,requisicao ,IdDoMovimento);
             }
