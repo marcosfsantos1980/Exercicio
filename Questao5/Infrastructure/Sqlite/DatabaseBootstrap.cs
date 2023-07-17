@@ -65,17 +65,16 @@ namespace Questao5.Infrastructure.Sqlite
             if (Tipo.ToUpper() != TipoMovimento.Credito && Tipo.ToUpper() != TipoMovimento.Debito)          
                 throw new Exception("INVALID_TYPE");
             
+            if (Valor <= 0)
+                throw new Exception("INVALID_VALUE");
+
             ContaCorrente contaCorrente = this.ObterContaCorrente(NumeroConta);
 
             if (contaCorrente == null)
                 throw new Exception("INVALID_ACCOUNT");                                  
 
             if (contaCorrente.Ativo == 0)
-                throw new Exception("INACTIVE_ACCOUNT");
-
-            if (Valor <= 0)
-                throw new Exception("INVALID_VALUE");
-
+                throw new Exception("INACTIVE_ACCOUNT");           
 
             if (TransacaoExistente(Request.RequestID))
                 throw new Exception("INVALID_REQUEST_ID");
@@ -97,6 +96,7 @@ namespace Questao5.Infrastructure.Sqlite
                 pars[3] = new SqliteParameter("TipoMovimento", Tipo.ToUpper());
                 pars[4] = new SqliteParameter("Valor", Valor);
 
+                //Não estava reconhecendo o parametro( algum problema na minha versão do Dapper X SQLLite)
                 //var reg = connection.Execute("Insert Into movimento (idmovimento,idcontacorrente,datamovimento,tipomovimento,valor)Values(@IdMovimento,@IdContacorrente,@DataMovimento,@TipoMovimento,@Valor);", pars);
                 // var reg = connection.Execute(sql, pars);
 
@@ -154,6 +154,7 @@ namespace Questao5.Infrastructure.Sqlite
             pars[1] = new SqliteParameter("Requisicao", Requisicao);
             pars[2] = new SqliteParameter("Resultado",  Resultado);
 
+            //Não estava reconhecendo o parametro( algum problema na minha versão do Dapper X SQLLite)
             //var reg = connection.Execute("Insert Into idempotencia (chave_idempotencia,requisicao,resultado)Values(@Chave_Idempotencia,@Requisicao,@Resultado);", pars);
             //var reg = connection.Execute(sql, pars);
             string sql = $"Insert Into idempotencia (chave_idempotencia,requisicao,resultado)Values('{ChaveIdempotencia}','{Requisicao}','{Resultado}');";
