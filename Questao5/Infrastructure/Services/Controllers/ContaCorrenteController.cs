@@ -21,12 +21,12 @@ namespace Questao5.Infrastructure.Services.Controllers
         }
 
         [HttpPost, Route("MovimentarConta")]        
-        public ActionResult<ContaDTO> MovimentarConta([FromBody] RequestDTO Requisicao)
+        public  async Task<ActionResult<ContaDTO>> MovimentarConta([FromBody] RequestDTO Requisicao)
         {
             ServicesLayer servicesLayer = new ServicesLayer(_databaseConfig);
             try
             {
-                var movimenta = servicesLayer.Movimentar(Requisicao);
+                var movimenta = await servicesLayer.Movimentar(Requisicao);
                 return Ok(movimenta);
             }
             catch (Exception ex)
@@ -37,12 +37,12 @@ namespace Questao5.Infrastructure.Services.Controllers
             
         }
         [HttpGet, Route("ObterSaldoConta")]
-        public ActionResult<ContaDTO> ObterSadolConta(int numeroConta )
+        public async Task<ActionResult<ContaDTO>> ObterSadolConta(int numeroConta )
         {
             try
             {
                 ServicesLayer servicesLayer = new ServicesLayer(_databaseConfig);
-                var saldo = servicesLayer.ObterSaldo(numeroConta);
+                var saldo = await servicesLayer.ObterSaldo(numeroConta);
                 return Ok(saldo);
             }
             catch (Exception ex)

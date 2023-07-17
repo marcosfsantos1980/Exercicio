@@ -58,7 +58,7 @@ namespace Questao5.Infrastructure.Sqlite
             connection.Execute("INSERT INTO contacorrente(idcontacorrente, numero, nome, ativo) VALUES('BCDACA4A-7067-ED11-AF81-825DFA4A16C9', 852, 'Jarrad Mckee', 0);");
             connection.Execute("INSERT INTO contacorrente(idcontacorrente, numero, nome, ativo) VALUES('D2E02051-7067-ED11-94C0-835DFA4A16C9', 963, 'Elisha Simons', 0);");
         }
-        public string Movimentar(RequestDTO Request)
+        public async Task<string> Movimentar(RequestDTO Request)
         {
             string Tipo = Request.TipoMovimentacao ; int NumeroConta = Request.NumeroContaCorrente; double Valor = Request.Valor;
 
@@ -101,7 +101,7 @@ namespace Questao5.Infrastructure.Sqlite
                 // var reg = connection.Execute(sql, pars);
 
                 string sql = $"Insert Into movimento (idmovimento,idcontacorrente,datamovimento,tipomovimento,valor)Values('{IdDoMovimento}','{contaCorrente.IdContaCorrente}','{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}','{Tipo}', {FixNumberToRecBD(Valor)})";
-                var reg = connection.Execute(sql);
+                var reg = await connection.ExecuteAsync(sql);
                 this.RegistrarTransacao(Request.RequestID ,requisicao ,IdDoMovimento);
             }
             catch (Exception ex)
@@ -112,7 +112,7 @@ namespace Questao5.Infrastructure.Sqlite
 
             return IdDoMovimento;
         }
-        public ContaDTO ObterSaldo(int NumeroConta)
+        public async Task <ContaDTO>ObterSaldo(int NumeroConta)
         {
             ContaCorrente contaCorrente = this.ObterContaCorrente(NumeroConta);
 
@@ -128,7 +128,7 @@ namespace Questao5.Infrastructure.Sqlite
 
             SqliteParameter parameter = new SqliteParameter("IdContaCorrente", contaCorrente.IdContaCorrente);
             string sql = $"Select tipomovimento,  valor from movimento where  idcontacorrente ='{contaCorrente.IdContaCorrente}' ;";
-            var movimento = connection.Query<Movimento>(sql,parameter);
+            var movimento = await  connection.QueryAsync<Movimento>(sql,parameter);
             
             ContaDTO contaDTO = new ContaDTO { DataResposta = DateTime.Now, NomeTitular = contaCorrente.Nome, NumeroConta = contaCorrente.Numero, SaldoAtual = 0 };
 
@@ -143,7 +143,7 @@ namespace Questao5.Infrastructure.Sqlite
             return contaDTO;
 
         }
-        public void RegistrarTransacao(string ChaveIdempotencia, string Requisicao, string Resultado)
+        public async void RegistrarTransacao(string ChaveIdempotencia, string Requisicao, string Resultado)
         {
             using var connection = new SqliteConnection(databaseConfig.Name);
             if (connection.State == System.Data.ConnectionState.Closed)
@@ -157,7 +157,7 @@ namespace Questao5.Infrastructure.Sqlite
             //var reg = connection.Execute("Insert Into idempotencia (chave_idempotencia,requisicao,resultado)Values(@Chave_Idempotencia,@Requisicao,@Resultado);", pars);
             //var reg = connection.Execute(sql, pars);
             string sql = $"Insert Into idempotencia (chave_idempotencia,requisicao,resultado)Values('{ChaveIdempotencia}','{Requisicao}','{Resultado}');";
-            var reg = connection.Execute(sql);
+            var reg  = await connection.ExecuteAsync(sql);
 
         }
         private ContaCorrente ObterContaCorrente(int NumeroConta)

@@ -15,15 +15,15 @@ namespace Questao5.Infrastructure.Database
             
             
         }
-        public string Movimentar(RequestDTO Request)
+        public async Task <string> Movimentar(RequestDTO Request)
         {
-            return databaseBootstrap.Movimentar(Request);
+            return await databaseBootstrap.Movimentar(Request);
         }
-        public ContaDTO ObterSaldo(int NumeroConta)
+        public async Task<ContaDTO> ObterSaldo(int NumeroConta)
         {
-            return databaseBootstrap.ObterSaldo(NumeroConta);
+            return await databaseBootstrap.ObterSaldo(NumeroConta);
         }
-        public void RegistrarTransacao(string chaveIdempotencia, string requisicao, string resultado)
+        public  async void RegistrarTransacao(string chaveIdempotencia, string requisicao, string resultado)
         {
             databaseBootstrap.RegistrarTransacao(chaveIdempotencia, requisicao, resultado);
         }

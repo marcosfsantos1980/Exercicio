@@ -12,13 +12,13 @@
             camadaDAO = new DAO(db);
 
         }   
-        public string Movimentar(RequestDTO Request)
+        public async Task<string> Movimentar(RequestDTO Request)
         {
-            return camadaDAO.Movimentar(Request);
+            return await camadaDAO.Movimentar(Request);
         }
-        public ContaDTO ObterSaldo(int NumeroConta)
+        public async Task<ContaDTO> ObterSaldo(int NumeroConta)
         {
-            return camadaDAO.ObterSaldo(NumeroConta);
+            return await camadaDAO.ObterSaldo(NumeroConta);
         }
         public void RegistrarTransacao(string chaveIdempotencia, string requisicao, string resultado)
         {
