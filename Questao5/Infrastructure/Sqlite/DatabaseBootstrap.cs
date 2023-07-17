@@ -94,7 +94,7 @@ namespace Questao5.Infrastructure.Sqlite
                 pars[0] = new SqliteParameter("IdMovimento", IdDoMovimento);
                 pars[1] = new SqliteParameter("IdContacorrente", contaCorrente.IdContaCorrente);
                 pars[2] = new SqliteParameter("DataMovimento", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
-                pars[3] = new SqliteParameter("TipoMovimento", Tipo);
+                pars[3] = new SqliteParameter("TipoMovimento", Tipo.ToUpper());
                 pars[4] = new SqliteParameter("Valor", Valor);
 
                 //var reg = connection.Execute("Insert Into movimento (idmovimento,idcontacorrente,datamovimento,tipomovimento,valor)Values(@IdMovimento,@IdContacorrente,@DataMovimento,@TipoMovimento,@Valor);", pars);

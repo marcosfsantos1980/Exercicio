@@ -21,7 +21,7 @@ namespace Questao5.Infrastructure.Services.Controllers
         }
 
         [HttpPost, Route("MovimentarConta")]        
-        public  async Task<ActionResult<ContaDTO>> MovimentarConta([FromBody] RequestDTO Requisicao)
+        public  async Task<ActionResult<string>> MovimentarConta([FromBody] RequestDTO Requisicao)
         {
             ServicesLayer servicesLayer = new ServicesLayer(_databaseConfig);
             try
